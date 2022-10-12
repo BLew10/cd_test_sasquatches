@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="d-flex align-items-start justify-content-between mx-5">
+        <h1>Sasquatch Websighting</h1>
+        <div class="d-flex flex-column align-items-end justify-content-around">
+            <h1>{{user.first_name}}</h1>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="mx-5">
+        <h1 class="my-5">{{report.location}} on {{report.date_of_report.strftime("%B %e, %Y")}}</h1>
+
+        <h2 class="my-2">What Happened:</h2>
+
+        <p>{{report.description}}</p>
+
+        <p><b> # of Sasquatches: </b>{{report.num_sasquatch}}</p>
+
+        {% if report.creator_id == user.id %}
+        <p> <b> Reported By:</b> You</p>
+        {% else %}
+        <p><b> Reported By:</b> {{report.creator_name}}</p>
+        {% endif %}
+    </div>
+
+    <div>
+
+        <h1>Skeptics</h1>
+        {% if skeptics %}
+            {% for skeptic in skeptics %}
+            <p>{{skeptic.skeptic_name}}</p>
+            {% endfor %}
+
+    </div>
+<div>
+    {% for skeptic in skeptics %}
+        {% if skeptic.skeptic_name == user.first_name %}
+            <a href="/believer/report/{{report.id}}/user/{{user.id}}" class="my-4">Believe It!</a>
+        {% else %}
+            <a href="/skeptic/report/{{report.id}}/user/{{user.id}}" class="my-4">I'm Skeptical</a>
+        {% endif %}
+    {% endfor %}
+        
+</div>
+
+    {% else %}
+    <p>No Skeptics Currently</p>
+    <a href="/skeptic/report/{{report.id}}/user/{{user.id}}" class="my-4">I'm Skeptical</a>
+    {% endif %}
+
+
+
+
+    </div>
+
+</body>
+
+</html>

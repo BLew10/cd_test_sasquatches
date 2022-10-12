@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="d-flex align-items-start mx-5 justify-content-between mb-3">
+        <h1>Sasquatch Websighting</h1>
+        <div class="d-flex flex-column align-items-end justify-content-around">
+            <h1>{{user.first_name}}</h1>
+            <a href="/report/new">Report a Sighting</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+
+
+    <div class="d-flex border border-black rounded flex-column">
+
+        {% if reports %}
+        {% for report in reports %}
+        <div class="d-flex justify-content-between align-items-center py-3 border border-black">
+            <div class="mx-5">
+                {% if not skeptics[report.id] %}
+                <p>Skeptics: 0</p>
+                {% else %}
+                <p>Skeptics: {{skeptics[report.id]}}</p>
+                {% endif %}
+
+
+            </div>
+            <div class="d-flex flex-column align-items-start justify-content-around w-75">
+                <span>{{report.location}} - {{report.date_of_report.strftime("%B %e, %Y")}}</span>
+                {% if report.creator_id == user.id %}
+                <span> <b> Reported By:</b> You</span>
+                {% else %}
+                <span><b> Reported By:</b> {{report.creator_name}}</span>
+                {% endif %}
+            </div>
+
+            <div class="d-flex align-items-start w-100 justify-content-end">
+                <a href="/report/{{report.id}}" class="mx-2">View</a>
+                {% if user.id == report.creator_id %}
+                <a href="/report/{{report.id}}/delete" class="mx-2">Delete</a>
+                <a href="/report/{{report.id}}/edit" class="mx-2" >Edit</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+
+        <p>No reports yet</p>
+        {% endif %}
+    </div>
+
+
+
+</body>
+
+</html>
